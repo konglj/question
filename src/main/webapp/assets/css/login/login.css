@@ -1,0 +1,251 @@
+@charset "utf-8";
+/* CSS Document */
+
+.main_box {
+    position: absolute; top:50%; left:50%; margin-top:-260px; margin-left: -300px; padding: 30px; width:600px; height:500px;
+	background:url(../images/1.png);
+    border-radius: 10px;
+}
+.main_box .setting {position: absolute; top: 5px; right: 10px; width: 10px; height: 10px;}
+.main_box .setting a {color: #FF6600;}
+.main_box .setting a:hover {color: #555;}
+.login_logo {margin-bottom: 20px; height: 72px; text-align: center;}
+.login_logo img {height: 72px;}
+.login_msg {text-align: center; font-size: 16px;}
+.login_form {padding-top: 20px; font-size: 16px;}
+.login_box .form-control {display: inline-block; *display: inline; zoom: 1; width: auto; font-size: 18px;}
+.login_box .form-control.x319 {width: 319px;}
+.login_box .form-control.x164 {width: 164px;}
+.login_box .form-group {margin-bottom: 20px;}
+.login_box .form-group label.t {width: 120px; text-align: right; cursor: pointer;}
+.login_box .form-group.space {padding-top: 15px; border-top: 1px #FFF dotted;}
+.login_box .form-group img {margin-top: 1px; height: 32px; vertical-align: top;}
+.login_box .m {cursor: pointer;}
+.bottom {text-align: center; font-size: 12px;}
+#submit_btn2{
+	background: #fff center repeat;
+	border: 1px solid #ccc;
+}
+#submit_btn2 a{
+	color: #52c0c0;
+}
+.zcxy{
+	color: #52c0c0;
+}
+.zcxy:hover{
+	color:  #399f9f;
+}
+/*忘记密码*/
+.wrapold{
+    border-bottom: 1px solid #cccccc;
+    margin: auto;
+    padding-bottom: 10px;
+    padding-top: 30px;
+    width: 500px;
+}
+#buttonold {
+    background: none repeat scroll center center #52C0C0;
+    border: medium none;
+    border-radius: 3px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    height: 46px;
+    margin-left: 50px;
+    width: 160px;
+}
+.wrapold h1 {
+    color: #f88d53;
+    font-size: 20px;
+    font-weight: normal;
+    }
+.bigboxold{
+	width:530px;
+    height: auto;	
+	margin:20px auto;
+    padding-bottom:40px;
+     
+}
+.buzhou{
+
+	margin:auto;
+	padding-top:10px;
+	width: 450px;
+	margin: auto;
+	text-align: center;
+
+}
+.buzhou span{
+	font-size:18px;
+		margin-left:40px;
+}
+.sjyz{
+	color: #333;font-size:18px;
+	float: left;
+	line-height:150px;
+}
+.newwords{
+	color: #999;font-size:18px;
+	line-height:150px;
+	float: left;
+	margin-left:35px;
+}
+.next{
+	clear: both;
+	width:80%;
+
+	margin:auto;
+}
+#tel{
+	width:70%;
+	height:45px;
+	border:1px solid #ccc;
+	float: left;
+}
+#get{
+	width:25%;
+	height:45px;
+	border:1px solid #ccc;
+	color:#F88F55;
+	background: #f9f9f9 center repeat;
+	margin-left:5px;
+
+}
+#tel_yz{
+	width:96%;
+	height:45px;
+	border:1px solid #ccc;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+.finish{
+	font-size: 20px;
+	line-height: 40px;
+	padding-left:10px;
+}
+.finish a{
+	color:#F88F55;
+	font-size: 20px;
+}
+.dp_info{
+	width:500px;
+	margin: auto;
+	border: 1px solid #ccc;
+	margin-top:35px;
+
+}
+.dp_info h2{
+	height:50px;
+	background: #f9f9f9 center repeat;
+	font-size: 18px;
+	color: #333;	
+	line-height: 50px;
+	border-bottom: 1px solid #ccc;
+	padding-left:20px;
+}
+.dp_info ul{
+		width:500px;
+	margin:auto;
+}
+.dp_info ul li{
+	float: left;
+	list-style: none;
+	margin:30px 14px 30px 14px;
+}
+.dp_info h2 span{
+	font-size: 16px;
+	line-height: 35px;
+	color: #666;
+	margin-left:10px;
+	
+}
+.detail_wrap{
+	padding-top:20px;	
+	
+
+}
+.enroll_label{
+	color: #333;
+	font-size:14px;
+	padding-left:30px;
+	width:10%;
+	display: block;
+	text-align:right;
+	float: left;
+	line-height: 35px;
+}
+.xing{
+	color:red;
+}
+#textarea{
+	width:300px;
+	margin-left:10px;
+    height:163px; 
+    border: solid 1px #ccc;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:5px;
+
+
+}
+.addrass{
+	display: block;
+	margin-top:50px;
+	*margin-top:-80px;
+	line-height: 26px;
+	float: right;
+	margin-right:80px;
+	color: red;
+	
+}
+.addrass2{
+	display: block;
+	margin-top:80px;
+	*margin-top:-80px;
+	line-height: 26px;
+	float: right;
+	margin-right:100px;
+	color: red;
+	
+}
+#zh2{
+	height:32px;
+	line-height: 32px;
+	
+	margin-bottom:20px;
+	border: 1px solid #CCCCCC;
+	margin-left:10px;
+}
+#scfj{
+	width:50px;
+	height:32px;
+	background: #52C0C0 center repeat;
+	border: none;
+	border-radius: 3px;
+	color: #fff;
+	cursor: pointer;
+}
+.map{
+	display: block;
+	clear: both;
+	
+}
+.map img{
+	margin-top:20px;
+	/*margin-left:130px;*/
+}
+
+
+.sfxz{
+
+	
+	padding-left:130px;
+	width: 500px;
+	margin: auto;
+	
+	margin-bottom:20px;
+	margin-top:-10px;
+}
+.sfxz input{
+	font-family: "微软雅黑";
+}

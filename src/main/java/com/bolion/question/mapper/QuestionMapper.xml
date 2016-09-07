@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bolion.question.mapper.QuestionMapper">
+
+	<select id="getQuestions" parameterType="com.bolion.question.bean.QuestionPage"
+		resultType="com.bolion.question.bean.Question">
+		select
+		q.id as id,
+		q.title as title,
+		q.`desc` as `desc`,
+		q.add_time as
+		add_time,
+		CASE
+		WHEN NOW()>end_time
+		then '已结束'
+		WHEN NOW()<![CDATA[<]]>start_time
+		then '未开始'
+		ELSE
+		'进行中'
+		END
+		as statename,
+		q.issend as issend
+		from question q
+		order by q.add_time desc
+		;
+	</select>
+
+	<select id="getQuestionsCount" parameterType="com.bolion.question.bean.QuestionPage"
+		resultType="int">
+		select
+		count(1)
+		from question q
+		;
+	</select>
+	<select id="getQuestionInfo" parameterType="int"
+		resultType="com.bolion.question.bean.Question">
+		select
+		q.id as id,
+		q.title as title,
+		q.`desc` as `desc`,
+		q.bz as bz,
+		q.start_time as starttime,
+		q.end_time as endtime,
+		q.add_time as
+		add_time,
+		CASE
+		WHEN NOW()>end_time
+		then '已结束'
+		WHEN NOW()<![CDATA[<]]>start_time
+		then '未开始'
+		ELSE
+		'进行中'
+		END
+		as statename,
+		q.img as img,
+		q.xy as xy
+		from question q
+		where 1=1
+		and
+		q.id=#{id}
+		;
+	</select>
+	
+	
+
+	<insert id="insertQuestion" parameterType="com.bolion.question.bean.Question">
+		insert into question
+		(title,`desc`,bz,start_time,end_time,state,img,add_time,xy)
+		values
+		(#{title},#{desc},#{bz},#{starttime},#{endtime},0,#{img},NOW(),#{xy})
+		;
+	</insert>
+
+
+	<update id="updateQuestion" parameterType="com.bolion.question.bean.Question">
+		update question
+		set
+		title=#{title},
+		`desc`=#{desc},
+		bz=#{bz},
+		start_time=#{starttime},
+		end_time=#{endtime},
+		<if test="img!=null and img!=''">
+		img=#{img},
+		</if>
+		xy=#{xy}
+		where 1=1
+		and id=#{id}
+		;
+
+	</update>
+
+	<delete id="delQuestion" parameterType="int">
+		delete from question
+		where id=#{id}
+		;
+	</delete>
+
+
+	<select id="getThemes" parameterType="map"
+		resultType="com.bolion.question.bean.Theme">
+		SELECT
+		t.id as id,
+		t.title as title,
+		t.type as type,
+		CASE t.type
+		when 0
+		then '主干题'
+		when 1 then '评分题'
+		when 2 then '单行问题'
+		when 3 then '多行文本题'
+		when 4
+		then '文件上传题'
+		end as typename,
+		IF(t.parentid=0,(select count(1) from
+		question_theme where parentid=t.id),0) as subcount,
+		t.max_score as
+		maxscore,
+		t.min_score as minscore,
+		t.required as required,
+		t.text_max_len as textmaxlen,
+		t.file_max_size as filemaxsize,
+		t.answerrole as answerrole
+		from
+		question_theme t
+		where 1=1
+		<if test="parentid!=null and parentid!=-1">
+			and t.parentid=#{parentid}
+		</if>
+		<if test="questionid!=null and questionid!=0">
+			and t.questionid=#{questionid}
+		</if>
+		order by orderby asc
+	</select>
+
+	<insert id="insertTheme" parameterType="com.bolion.question.bean.Theme"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into question_theme
+		(questionid,title,type,min_score,max_score,required,text_max_len,file_max_size,parentid,orderby,answerrole)
+		values
+		(#{questionid},#{title},#{type},#{minscore},#{maxscore},#{required},#{textmaxlen},#{filemaxsize},#{parentid},#{orderby},#{answerrole})
+		;
+	</insert>
+
+	<update id="updateTheme" parameterType="com.bolion.question.bean.Theme">
+		update question_theme
+		set title=#{title},
+		min_score=#{minscore},
+		max_score=#{maxscore},
+		required= #{required},
+		text_max_len=#{textmaxlen},
+		file_max_size=#{filemaxsize},
+		answerrole=#{answerrole}
+		where id=#{id}
+		;
+
+	</update>
+	<delete id="delTheme" parameterType="int">
+		delete from question_theme
+		where id=#{id}
+		or parentid=#{id}
+		;
+	</delete>
+	<select id="getThemeInfo" parameterType="int"
+		resultType="com.bolion.question.bean.Theme">
+		SELECT
+		t.id as id,
+		t.title as title,
+		t.type as type,
+		IF(t.parentid=0,(select count(1) from question_theme where
+		parentid=t.id),0) as subcount,
+		t.max_score as maxscore,
+		t.min_score as
+		minscore,
+		t.required as required,
+		t.text_max_len as textmaxlen,
+		t.file_max_size as filemaxsize,
+		t.parentid as parentid,
+		t.orderby as
+		orderby,
+		t.questionid as questionid,
+		t.answerrole as answerrole
+		from question_theme t
+		where 1=1
+		and t.id=#{id}
+		order by orderby asc
+	</select>
+
+	<update id="updateThemeOrder" parameterType="com.bolion.question.bean.Theme">
+		update question_theme
+		set orderby=#{orderby}
+		where 1=1
+		and id=#{id}
+		;
+	</update>
+
+	<select id="getLastTheme" parameterType="map"
+		resultType="com.bolion.question.bean.Theme">
+		SELECT
+
+		t.parentid as parentid,
+		t.orderby as orderby
+		from question_theme t
+		where 1=1
+		and t.parentid=#{parentid}
+		and t.questionid=#{questionid}
+		ORDER BY t.orderby desc
+		LIMIT 0,1
+		
+		;
+	</select>
+	
+	<insert id="insertAnswer" parameterType="com.bolion.question.bean.Answer" keyProperty="id" useGeneratedKeys="true">
+	  insert into answer
+	  (usertype,questionid,area,ywstate,jsstate)
+	  values
+	  (#{usertype},#{questionid},#{area},#{ywstate},#{jsstate})
+	  ;
+	</insert>
+	
+	<insert id="insertAnswerInfo" parameterType="com.bolion.question.bean.AnswerInfo">
+	  insert into answer_info
+	  (answerid,questionid,themeid,jscontent,ywcontent)
+	  values
+	  (#{answerid},#{questionid},#{themeid},#{jscontent},#{ywcontent})
+	  ;
+	</insert>
+
+	<select id="getAnswerResult" parameterType="int" resultType="com.bolion.question.bean.Answer">
+	 select 
+	 a.id as id,
+	 t.name as typename,
+	 r.areaname as areaname,
+	 a.file as file,
+	 a.jsstate as jsstate,
+	  a.ywstate as ywstate,
+	 case a.jsstate 
+	 when 0 then '待填写'
+	 when 1 then '待确认'
+	 when 2 then '待提交'
+	 when 3 then '已完成' 
+	 end
+	 as jsstatename,
+	  case a.ywstate 
+	 when 0 then '待填写'
+	 when 1 then '待确认'
+	 when 2 then '待提交'
+	 when 3 then '已完成' 
+	 end
+	  as ywstatename
+	 from answer a 
+	 left join user_type t on a.usertype=t.typeid
+	 left join user_area r on r.areaid=a.area		
+	 where a.questionid=#{questionid}	
+	</select>
+	
+	<select id="getAnswerResultByAnswerid" parameterType="int" resultType="com.bolion.question.bean.Answer">
+	 select 
+	 a.id as id,
+	 a.jsstate as jsstate,
+	  a.ywstate as ywstate,
+	  a.questionid as questionid
+	 from answer a 
+	 where a.id=#{id}	
+	</select>
+	
+	
+	
+	
+	
+	<resultMap type="com.bolion.question.bean.AnswerInfo" id="getAnserResultsMap">
+	 <id column="themeid" property="themeid"/>
+	 <id column="answerid" property="answerid"></id>
+	 
+	 <association property="subAnswerInfo" column="{themeid=themeid,answerid=answerid}"  select="getSubReuslts"></association>
+	</resultMap>
+	
+
+	<select id="getSubReuslts" parameterType="map"
+		resultType="com.bolion.question.bean.AnswerInfo">
+		SELECT
+		t.id as id,
+		t.title as title,
+		t.type as type,
+		t.max_score as maxscore,
+		t.min_score as
+		minscore,
+		t.required as required,
+		t.text_max_len as textmaxlen,
+		t.file_max_size as filemaxsize,
+		t.parentid as parentid,
+		t.orderby as
+		orderby,
+		t.questionid as questionid,
+    	i.jscontent as jscontent,
+    	i.ywcontent as ywcontent
+		from question_theme t
+   		 left JOIN answer_info i on i.themeid=t.id
+		 where 1=1
+		and t.parentid=#{themeid}
+		and i.answerid=#{answerid}
+		order by orderby asc
+	</select>
+
+
+	<select id="getAnserResultInfo" parameterType="com.bolion.question.bean.QuestionPage"
+		resultMap="getAnserResultsMap">
+		SELECT
+		i.id as id,
+		t.id as themeid,
+		t.title as title,
+		t.type as type,
+		t.max_score as maxscore,
+		t.min_score as
+		minscore,
+		t.required as required,
+		t.text_max_len as textmaxlen,
+		t.file_max_size as filemaxsize,
+		t.parentid as parentid,
+		t.orderby as
+		orderby,
+		t.questionid as questionid,
+    	i.jscontent as jscontent,
+    	i.ywcontent as ywcontent,
+    	i.answerid as answerid
+		from  answer_info  i
+   		 left JOIN question_theme t on i.themeid=t.id
+		where 1=1
+		and t.parentid=0
+		and i.answerid=#{answerid}
+		order by orderby asc
+	</select>
+	<update id="setQuestionSend" parameterType="int">
+	  update question set issend=1
+	  where id=#{id}
+	  ;
+	</update>
+
+</mapper>

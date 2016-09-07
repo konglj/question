@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bolion.question.mapper.UserMapper">
+
+	<select id="getUsers" parameterType="com.bolion.question.bean.UserPage"
+		resultType="com.bolion.question.bean.UserInfo">
+		select
+		u.id as userid,
+		u.user_name as username,
+		u.user_tele as usertele,
+		u.isregist as isregist,
+		case u.isregist 
+		when 0 then '否'
+		else '是'
+		end as isregistname,
+		u.wx_name as wxname,
+        t.name as usertypename,
+        a.areaname as areaname,
+		r.rolename as userrolename
+		
+		from user_info u
+		left join user_type t on t.typeid=u.user_type
+   		left join user_area a on a.areaid=u.user_area
+   		left join user_role r on r.roleid=u.user_role
+		
+		where 1=1
+		<if test="username!=null and username!=''">
+		and u.user_name like '%${username}%'
+		</if>
+		<if test="usertele!=null and usertele!=''">
+		and u.usertele like '%${usertele}%'
+		</if>
+		
+		<if test="usertele!=null and usertele!=''">
+		and u.usertele like '%${usertele}%'
+		</if>
+		<if test="isregist!=null and isregist!=-1">
+		and u.isregist =#{isregist}
+		</if>
+		<if test="usertype!=null and usertype!=0">
+		and u.user_type =#{usertype}
+		</if>
+		<if test="userarea!=null and userarea!=0">
+		and u.user_area =#{userarea}
+		</if>
+		order by u.regist_time desc ,u.add_time desc
+		;
+	</select>
+
+	<select id="getUsersCount" parameterType="com.bolion.question.bean.UserPage"
+		resultType="int">
+		select
+		count(1)
+		from user_info u
+		where 1=1
+		<if test="username!=null and username!=''">
+		and u.user_name like '%${username}%'
+		</if>
+		<if test="usertele!=null and usertele!=''">
+		and u.usertele like '%${usertele}%'
+		</if>
+		
+		<if test="usertele!=null and usertele!=''">
+		and u.usertele like '%${usertele}%'
+		</if>
+		<if test="isregist!=null and isregist!=-1">
+		and u.isregist =#{isregist}
+		</if>
+		;
+	</select>
+	<select id="getUserInfo" parameterType="int" resultType="com.bolion.question.bean.UserInfo">
+	select
+		u.id as userid,
+		u.user_name as username,
+		u.user_tele as usertele,
+		u.wx_name as wxname,
+		u.user_type as usertype,
+        t.name as usertypename,
+        u.user_area as userarea,
+        a.areaname as areaname,
+        u.user_role as userrole,
+		r.rolename as userrolename,
+		u.user_bz as userbz,
+		u.regist_time as registtime,
+		u.add_time as addtime,
+		case u.isregist 
+		when 0 then '未注册'
+		else '已注册'
+		end as isregistname,
+		u.user_mail as usermail
+		
+		from user_info u
+		left join user_type t on t.typeid=u.user_type
+   		left join user_area a on a.areaid=u.user_area
+   		left join user_role r on r.roleid=u.user_role
+		
+		where 1=1
+		and u.id=#{id}
+		;
+	</select>
+	
+	<insert id="insertUser" parameterType="com.bolion.question.bean.UserInfo">
+	 insert into user_info
+	 (user_name,user_tele,user_area,user_state,user_type,user_role,user_bz,add_time,user_mail)
+	 values
+	 (#{username},#{usertele},#{userarea},0,#{usertype},#{userrole},#{userbz},NOW(),#{usermail})
+	 ;
+	</insert>
+	
+	
+	<update id="updateUser" parameterType="com.bolion.question.bean.UserInfo">
+	  update user_info
+	  set user_name=#{username},
+	  user_tele=#{usertele},
+	  user_area=#{userarea},
+	  user_type=#{usertype},
+	  user_role=#{userrole},
+	  user_bz=#{userbz},
+	  user_mail=#{usermail}
+	  where 1=1
+	  and id=#{userid}
+	  ;
+	  
+	</update>
+	
+	<delete id="deleteUser" parameterType="int" >
+	  delete from  user_info
+	  where id=#{userid}
+	  ;
+	</delete>
+	
+	<select id="getUserAreas" resultType="com.bolion.question.bean.UserArea">
+	  select 
+	  areaname as areaname,
+	  areaid as areaid
+	  from user_area
+	  order by id asc
+	  ;
+	</select>
+	
+	<select id="getUserTypes" resultType="com.bolion.question.bean.UserType">
+	  select 
+	  name as name,
+	  typeid as typeid
+	  from user_type
+	  order by id asc
+	  ;
+	</select>
+	
+	<select id="getUserRoles" resultType="com.bolion.question.bean.UserRole">
+	 select 
+	 rolename as rolename,
+	 roleid as roleid
+	 from user_role
+	 order by orderby desc
+	 ;
+	</select>
+	
+	<select id="checkUserPhoneExist" parameterType="com.bolion.question.bean.UserInfo" resultType="int">
+	  select count(1)
+	  from user_info u
+	  where 1=1
+	  and u.user_tele=${usertele}
+	  and u.id!=#{userid}
+	  ;
+	</select>
+	
+	<select id="checkUserTypeExist" parameterType="com.bolion.question.bean.UserInfo" resultType="int">
+	   select count(1)
+	  from user_info u
+	  where 1=1
+	  and u.user_type=#{usertype}
+	  and u.user_area =#{userarea}
+	  and u.user_role=#{userrole}
+	   and u.id!=#{userid}
+	  ;
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bolion.question.mapper.SettingMapper">
+
+	<select id="getSettingByKey" parameterType="String" resultType="com.bolion.question.bean.Setting">
+	  select 
+	  s.id as id,
+	  s.`key` as `key`,
+	  s.content as content
+	  from setting s 
+	  where 1=1
+	  and s.`key`=#{key}
+	  ;
+	</select>
+	
+	
+</mapper>

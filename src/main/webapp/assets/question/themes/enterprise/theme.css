@@ -1,0 +1,81 @@
+/* 企业皮肤 */
+.g_survey,
+.g_survey .survey_wrap{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.g_footer{
+    background-color: transparent;
+}
+
+.g_footer p,
+.g_footer a{
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 内容区域 */
+
+/* 问卷标题 */
+.g_survey .survey_title{
+    line-height: 1;
+}
+
+.g_survey .survey_title .title_content{
+    border-top: 2px solid #82898a;
+    border-bottom: 1px solid #a3a8a9;
+    padding: 13px 0;
+    font-size: 56px;
+    color: #323e40;
+    line-height: 1.2;
+}
+
+.g_survey .survey_title .title_content:after{
+    content: 'Online Survey & Questionnaire';
+    display: block;
+    font-size: 12px;
+    color: #586568;
+}
+
+/* 手机端 */
+@media screen and (max-width: 800px){
+
+    .survey_wrap{
+        background-color: transparent !important;
+        margin: 15px 15px 0 !important;
+        border: none !important;
+    }
+
+    .survey_background_wrap {
+        z-index: -2;
+    }
+
+    .survey_title{
+        color: #000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+    }
+    .g_survey .survey_title{
+        margin-top: 30px;
+    }
+
+    .survey_content{
+        margin-top: 130%;
+    }
+
+    .survey_prefix,
+    .survey_container,
+    .survey_suffix,
+    .survey_control,
+    .survey_assess_result,
+    .survey_ads{
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .g_survey .question .title{
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+}
